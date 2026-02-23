@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Where's Chau Money?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1 class="logo">Where's Chau Money?</h1>
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+
+        <main id="main-content">
+            
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="card balance-card">
+                    <p>Số dư hiện tại</p>
+                    <h2 id="total-balance">0 đ</h2>
+                    <div class="cash-flow">
+                        <div class="flow-item income">
+                            <i class="fas fa-arrow-down"></i>
+                            <div>
+                                <p>Thu nhập</p>
+                                <strong id="total-income">0 đ</strong>
+                            </div>
+                        </div>
+                        <div class="flow-item expense">
+                            <i class="fas fa-arrow-up"></i>
+                            <div>
+                                <p>Chi tiêu</p>
+                                <strong id="total-expense">0 đ</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card budget-progress-card">
+                    <h3>Ngân sách tháng này</h3>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="main-budget-progress"></div>
+                    </div>
+                    <p class="progress-text"><span id="budget-used">0 đ</span> / <span id="budget-total">0 đ</span></p>
+                </div>
+
+                <div class="card recent-transactions">
+                    <h3>Giao dịch gần đây</h3>
+                    <ul id="recent-list" class="transaction-list">
+                        </ul>
+                </div>
+            </section>
+
+            <section id="tab-transaction" class="tab-content">
+                <div class="card">
+                    <h3>Thêm Giao Dịch Mới</h3>
+                    <form id="transaction-form">
+                        <div class="form-group">
+                            <label>Loại giao dịch</label>
+                            <div class="type-toggle">
+                                <input type="radio" id="type-expense" name="type" value="expense" checked>
+                                <label for="type-expense" class="btn-type expense-btn">Chi tiền</label>
+                                <input type="radio" id="type-income" name="type" value="income">
+                                <label for="type-income" class="btn-type income-btn">Thu tiền</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Số tiền (VNĐ)</label>
+                            <input type="number" id="amount" required placeholder="Ví dụ: 50000">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Danh mục</label>
+                            <select id="category" required>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Ngày</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Ghi chú (Tùy chọn)</label>
+                            <input type="text" id="note" placeholder="Mua cafe...">
+                        </div>
+                        <button type="submit" class="btn-primary">Lưu giao dịch</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="tab-report" class="tab-content">
+                <div class="card">
+                    <h3>Báo cáo chi tiêu</h3>
+                    <input type="month" id="report-month" class="month-picker">
+                    
+                    <div class="chart-container">
+                        <h4>Theo danh mục (Biểu đồ tròn)</h4>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container mt-4">
+                        <h4>Theo ngày (Biểu đồ cột)</h4>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-budget" class="tab-content">
+                <div class="card">
+                    <h3>Cài đặt Ngân sách (Tháng)</h3>
+                    <p class="sub-text">Đặt giới hạn chi tiêu cho từng danh mục</p>
+                    <div id="budget-list">
+                        </div>
+                    <button id="save-budget-btn" class="btn-primary mt-4">Lưu Ngân Sách</button>
+                </div>
+            </section>
+
+            <section id="tab-settings" class="tab-content">
+                <div class="card">
+                    <h3>Cài đặt ứng dụng</h3>
+                    <ul class="settings-list">
+                        <li>
+                            <span>Giao diện tối (Dark Mode)</span>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-theme-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <span>Xóa toàn bộ dữ liệu</span>
+                            <button id="reset-data-btn" class="btn-danger">Xóa dữ liệu</button>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="tab-dashboard">
+                <i class="fas fa-home"></i>
+                <span>Tổng quan</span>
+            </button>
+            <button class="nav-item" data-target="tab-transaction">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm</span>
+            </button>
+            <button class="nav-item" data-target="tab-report">
+                <i class="fas fa-chart-pie"></i>
+                <span>Báo cáo</span>
+            </button>
+            <button class="nav-item" data-target="tab-budget">
+                <i class="fas fa-wallet"></i>
+                <span>Ngân sách</span>
+            </button>
+            <button class="nav-item" data-target="tab-settings">
+                <i class="fas fa-cog"></i>
+                <span>Cài đặt</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
